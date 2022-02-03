@@ -12,7 +12,7 @@ mongoose.connect(uri, {useNewUrlParser: true}).then(() => {
     const app = express(); 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: false}));
-    app.use('/api',routes);
+    app.use(routes);
 
     app.get('/', (request, response) => {
         response.sendFile('index.html',{root:__dirname});
@@ -26,5 +26,3 @@ mongoose.connect(uri, {useNewUrlParser: true}).then(() => {
 }).catch((e) => {  
     console.log(e.toString());
 })
-
-
