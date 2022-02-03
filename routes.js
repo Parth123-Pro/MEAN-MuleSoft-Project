@@ -1,41 +1,59 @@
-const express = require("express");
-const Model = require(".modes/cryptos");
-const app = express();
+const express = require('express');
+const router = express.Router();
 
-app.get("/cryptos", async (request, response) => {
-  const crypto = await Model.find({});
+const AddressI = require('./models/cryptos');
+const PersonI = require('./models/nfts');
+const req = require('express/lib/request');
 
-  try {
-    response.send(crypto);
-  } catch (error) {
-    response.status(500).send(error);
-  }
+//crypto
+router.get('/cryptos', async (request, response) => {  
+    const data = await Crypto.find();
+    response.send(data);
 });
-app.post("/food", async (request, response) => {
-    const food = new foodModel(request.body);
-  
-    try {
-      await food.save();
-      response.send(food);
-    } catch (error) {
-      response.status(500).send(error);
+
+router.post('/cryptos', async (request, response) => {    
+    const crypto = new PersonI(request.body)
+    await crypto.save();
+    response.send(crypto);
+})
+
+router.patch('/cryptos/:name', async (request, response) => {    
+    const _id = request.params.name;
+    const crypto = await Crypto.findByIdAndUpdate(_id, request.body, {new: true});
+    response.send(crypto);
+})
+
+router.delete('/person/:name', async (request, response) => {  
+    try{
+        const _id = request.params.name;
+        const crypto = await Crypto.findByIdAndDelete(_id);
+        response.send(crypto);
+    }catch (e){
+        response.send(e);
     }
-  });
-  app.patch("/food/:id", async (request, response) => {
-    try {
-      await foodModel.findByIdAndUpdate(request.params.id, request.body);
-      await foodModel.save();
-      response.send(food);
-    } catch (error) {
-      response.status(500).send(error);
-    }
-  });app.delete("/food/:id", async (request, response) => {
-    try {
-      const food = await foodModel.findByIdAndDelete(request.params.id);
-  
-      if (!food) response.status(404).send("No item found");
-      response.status(200).send();
-    } catch (error) {
-      response.status(500).send(error);
-    }
-  });module.exports = app;
+})
+
+//nft
+router.get('/address', async (request, response) => {  // fetch
+    const data = await AddressI.find();
+    response.send(data);
+});
+
+router.post('/address', async (request, response) => {    // insert
+    const address = new AddressI(request.body)
+    address.save();
+    response.send(address);
+})
+
+router.patch('/address/:id', async (request, response) => {    // update
+    const _id = request.params.id;
+    const address = await AddressI.findByIdAndUpdate(_id, request.body, {new: true});
+    response.send(address);
+})
+
+router.delete('/address/:id', async (request, response) => {
+    const _id = request.params.id;
+    const address = await AddressI.findByIdAndDelete(_id);
+    response.send(address);
+})
+module.exports = router;

@@ -1,22 +1,28 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const Router = require("routes");
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const routes = require("./routes");
 
-const app = express();
+const port = process.env.PORT || 3000;
+const uri = "mongodb+srv://Parth:parth123@currencies.g2voi.mongodb.net/currencies?retryWrites=true&w=majority";
 
-app.use(express.json());
+mongoose.connect(uri, {useNewUrlParser: true}).then(() => { 
+    console.log('Connected'); 
 
-mongoose.connect(
-  "mongodb+srv://Parth:   @cluster0.g2voi.mongodb.net/cryptos?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true
-  }
-);
+    const app = express(); 
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({extended: false}));
+    app.use(routes);
 
-app.use(Router);
+    app.get('/', (request, response) => {
+        response.sendFile('index.html',{root:__dirname});
+    })
+    
+    app.listen(port, () => {    
+        console.log('server started');
+    });
+    
 
-app.listen(3000, () => {
-  console.log("Server is running...");
-});
+}).catch((e) => {  
+    console.log(e.toString());
+})
