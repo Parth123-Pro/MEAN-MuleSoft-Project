@@ -1,0 +1,24 @@
+{
+  "name": "mlab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Parth123-Pro/Mlab.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Parth123-Pro/Mlab/issues"
+  },
+  "homepage": "https://github.com/Parth123-Pro/Mlab#readme",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "express": "^4.17.2",
+    "mongoose": "^6.2.0"
+  }
+}
