@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-
+var User = require('./Models/user')
+var bcrypt = require('bcryptjs')
+var jwt = require('jsonwebtoken')
 const Crypto = require('./models/cryptos');
-const Nft = require('./models/nfts');
 const req = require('express/lib/request');
 
 //crypto
@@ -34,26 +35,32 @@ router.delete('/cryptos/:name', async (request, response) => {
 })
 
 //nft
-router.get('/nfts', async (request, response) => {  
-    const nft = await Nft.find();
-    response.send(nft);
-});
+router.post('/users',async(req,res)=>{
+    
+  //generate salt key
+  salt = await bcrypt.genSalt(10)
+  console.log(salt)
 
-router.post('/nfts', async (request, response) => {    
-    const nft = new Nft(request.body)
-    address.save();
-    response.send(nft);
+  hashedpswd = await bcrypt.hash(req.body.password,salt)
+  console.log(hashedpswd)
+
+  const iuser = new User({
+      uname:req.body.uname,
+      password:hashedpswd
+  })  
+  await iuser.save((err,msg)=>{
+      if(err){
+          res.status(500).json({
+              "error":err
+          })
+      }
+      else{
+          res.status(200).json({
+              "My-message":msg
+          })
+      }
+  })
+
 })
 
-router.patch('/nfts/:name', async (request, response) => {   
-    const _id = request.params.name;
-    const nft = await Nft.findByIdAndUpdate(_id, request.body, {new: true});
-    response.send(nft);
-})
-
-router.delete('/nfts/:name', async (request, response) => {
-    const _id = request.params.name;
-    const nft = await Nft.findByIdAndDelete(_id);
-    response.send(nft);
-})
 module.exports = router;
