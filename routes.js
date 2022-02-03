@@ -23,7 +23,7 @@ router.patch('/cryptos/:name', async (request, response) => {
     response.send(crypto);
 })
 
-router.delete('/person/:name', async (request, response) => {  
+router.delete('/cryptos/:name', async (request, response) => {  
     try{
         const _id = request.params.name;
         const crypto = await Crypto.findByIdAndDelete(_id);
@@ -34,18 +34,18 @@ router.delete('/person/:name', async (request, response) => {
 })
 
 //nft
-router.get('/nfts', async (request, response) => {  // fetch
+router.get('/nfts', async (request, response) => {  
     const nft = await Nft.find();
     response.send(nft);
 });
 
-router.post('/nfts', async (request, response) => {    // insert
+router.post('/nfts', async (request, response) => {    
     const nft = new Nft(request.body)
     address.save();
     response.send(nft);
 })
 
-router.patch('/nfts/:name', async (request, response) => {    // update
+router.patch('/nfts/:name', async (request, response) => {   
     const _id = request.params.name;
     const nft = await Nft.findByIdAndUpdate(_id, request.body, {new: true});
     response.send(nft);
