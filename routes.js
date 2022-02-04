@@ -5,31 +5,71 @@ const Crypto = require('./models/cryptos');
 const Nft = require('./models/nfts');
 
 //crypto
-router.get('/cryptos', async (request, response) => {  
-    const crypto = await Crypto.find();
-    response.send(crypto);
-});
-
-router.post('/cryptos', async (request, response) => {    
-    const crypto = new Crypto(request.body)
-    await crypto.save();
-    response.send(crypto);
+router.get('/cryptos',async(req,res)=>{
+    const icryptos = await Crypto.find()
+    res.send(icryptos)
 })
 
-router.patch('/cryptos/:name', async (request, response) => {    
-    const _id = request.params.name;
-    const crypto = await Crypto.findByIdAndUpdate(_id, request.body, {new: true});
-    response.send(crypto);
+//to add the movies
+router.post("/cryptos",async(req,res)=>{
+    const icryptos = new Crypto({
+        name:req.body.name,
+        price:req.body.price
+    })
+
+    await icryptos.save((err,msg)=>{
+        if(err){
+            res.status(500).json({
+                "error":err
+            })
+        }
+        else{
+            res.status(200).json({
+                "My-message":msg
+            })
+        }
+    })
+
 })
 
-router.delete('/cryptos/:name', async (request, response) => {  
-    try{
-        const _id = request.params.name;
-        const crypto = await Crypto.findByIdAndDelete(_id);
-        response.send(crypto);
-    }catch (e){
-        response.send(e);
-    }
+
+// api for updating movie
+
+router.patch('/cryptos/:id',async (req,res)=>{
+    const icryptos = await Crypto.findOne({_id:req.params.id})
+    icryptos.name = req.body.name
+    icryptos.price = req.body.price
+    await imovie.save((err,msg)=>{
+        if(err){
+            res.status(500).json({
+                error:err
+            })
+        }
+        else{
+            res.status(200).json({
+                msg:msg
+            })
+        }
+    })
+
+})
+
+//delete api
+
+router.delete("/cryptos/:name",async(req,res)=>{
+    await Crypto.deleteOne({name:req.params.name},(err,msg)=>{
+        if(err){
+            res.status(500).json({
+                error:err
+            })
+        }
+        else{
+            res.status(200).json({
+                msg:msg
+            })
+        }
+
+    })
 })
 
 //nft
