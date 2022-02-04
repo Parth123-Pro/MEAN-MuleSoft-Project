@@ -3,7 +3,6 @@ const router = express.Router();
 
 const Crypto = require('./models/cryptos');
 const Nft = require('./models/nfts');
-const req = require('express/lib/request');
 
 //crypto
 router.get('/cryptos', async (request, response) => {  
