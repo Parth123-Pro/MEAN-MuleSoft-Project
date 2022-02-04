@@ -34,44 +34,23 @@ router.post("/cryptos",async(req,res)=>{
 
 
 // api for updating movie
-
-router.patch('/cryptos/:id',async (req,res)=>{
-    const icryptos = await Crypto.findOne({_id:req.params.id})
-    icryptos.name = req.body.name
-    icryptos.price = req.body.price
-    await imovie.save((err,msg)=>{
-        if(err){
-            res.status(500).json({
-                error:err
-            })
-        }
-        else{
-            res.status(200).json({
-                msg:msg
-            })
-        }
-    })
-
+router.patch('/cryptos/:id', async (request, response) => {   
+    const _id = request.params.id;
+    const icryptos = await Crypto.findByIdAndUpdate(_id, request.body, {new: true});
+    response.send(icryptos);
 })
 
-//delete api
 
-router.delete("/cryptos/:name",async(req,res)=>{
-    await Crypto.deleteOne({name:req.params.name},(err,msg)=>{
-        if(err){
-            res.status(500).json({
-                error:err
-            })
-        }
-        else{
-            res.status(200).json({
-                msg:msg
-            })
-        }
-
-    })
+//deleting the data
+router.delete('/cryptos/:id', async (request, response) => {   
+    try{
+        const _id = request.params.id;
+        const icrypto = await Crypto.findByIdAndDelete(_id);
+        response.send(icryptos);
+    }catch (e){
+        response.send(e);
+    }
 })
-
 //nft
 router.get('/nfts', async (request, response) => {  
     const nft = await Nft.find();
