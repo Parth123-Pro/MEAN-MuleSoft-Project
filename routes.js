@@ -4,7 +4,7 @@ const router = express.Router();
 const Movie = require('./models/movie');
 
 
-//crypto
+//movie
 router.get('/movies',async(req,res)=>{
     const imovie = await Movie.find()
     res.send(imovie)
@@ -15,7 +15,7 @@ router.post("/movies",async(req,res)=>{
     const imovie = new Movie({
         Mname:req.body.Mname,
         Mratting:req.body.Mratting,
-        Mtickets_price:req.body.Mtickets_price
+        Mtickets:req.body.Mtickets,
     })
 
     await imovie.save((err,msg)=>{
