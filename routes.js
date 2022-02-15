@@ -15,7 +15,7 @@ router.post("/movies",async(req,res)=>{
     const imovie = new Movie({
         Mname:req.body.Mname,
         Mratting:req.body.Mratting,
-        Mtickets:req.body.Mtickets,
+        Mtickets:req.body.Mtickets
     })
 
     await imovie.save((err,msg)=>{
@@ -37,7 +37,10 @@ router.post("/movies",async(req,res)=>{
 // api for updating movie
 router.patch('/movies/:id', async (request, response) => {   
     const _id = request.params.id;
-    const imovie = await Crypto.findByIdAndUpdate(_id, request.body, {new: true});
+    const imovie = await Movie.findByIdAndUpdate(_id, request.body, {new: true});
+        imovie.Mname=req.body.Mname
+       imovie.Mratting=req.body.Mratting
+        imovie.Mtickets=req.body.Mtickets
     response.send(imovie);
 })
 
@@ -46,7 +49,7 @@ router.patch('/movies/:id', async (request, response) => {
 router.delete('/movies/:id', async (request, response) => {   
     try{
         const _id = request.params.id;
-        const imovie = await Crypto.findByIdAndDelete(_id);
+        const imovie = await Movie.findByIdAndDelete(_id);
         response.send(imovie);
     }catch (e){
         response.send(e);
