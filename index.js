@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const routes = require("./routes");
 
 const port = process.env.PORT || 3000;
-const uri = "mongodb+srv://Parth:parth123@currencies.g2voi.mongodb.net/currencies?retryWrites=true&w=majority";
+const uri = "mongodb+srv://movie:movie123@cluster0.g2voi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 mongoose.connect(uri, {useNewUrlParser: true}).then(() => { 
     console.log('Connected'); 

@@ -1,23 +1,24 @@
 const express = require('express');
 const router = express.Router();
 
-const Crypto = require('./models/cryptos');
-const Nft = require('./models/nfts');
+const Movie = require('./models/movie');
+
 
 //crypto
-router.get('/cryptos',async(req,res)=>{
-    const icryptos = await Crypto.find()
-    res.send(icryptos)
+router.get('/movies',async(req,res)=>{
+    const imovie = await Movie.find()
+    res.send(imovie)
 })
 
 //to add the movies
-router.post("/cryptos",async(req,res)=>{
-    const icryptos = new Crypto({
-        name:req.body.name,
-        price:req.body.price
+router.post("/movies",async(req,res)=>{
+    const imovie = new Movie({
+        Mname:req.body.Mname,
+        Mratting:req.body.Mratting,
+        Mtickets_price:req.body.Mtickets_price
     })
 
-    await icryptos.save((err,msg)=>{
+    await imovie.save((err,msg)=>{
         if(err){
             res.status(500).json({
                 "error":err
@@ -34,44 +35,22 @@ router.post("/cryptos",async(req,res)=>{
 
 
 // api for updating movie
-router.patch('/cryptos/:id', async (request, response) => {   
+router.patch('/movies/:id', async (request, response) => {   
     const _id = request.params.id;
-    const icryptos = await Crypto.findByIdAndUpdate(_id, request.body, {new: true});
-    response.send(icryptos);
+    const imovie = await Crypto.findByIdAndUpdate(_id, request.body, {new: true});
+    response.send(imovie);
 })
 
 
 //deleting the data
-router.delete('/cryptos/:id', async (request, response) => {   
+router.delete('/movies/:id', async (request, response) => {   
     try{
         const _id = request.params.id;
-        const icrypto = await Crypto.findByIdAndDelete(_id);
-        response.send(icryptos);
+        const imovie = await Crypto.findByIdAndDelete(_id);
+        response.send(imovie);
     }catch (e){
         response.send(e);
     }
 })
-//nft
-router.get('/nfts', async (request, response) => {  
-    const nft = await Nft.find();
-    response.send(nft);
-});
 
-router.post('/nfts', async (request, response) => {    
-    const nft = new Nft(request.body)
-    address.save();
-    response.send(nft);
-})
-
-router.patch('/nfts/:name', async (request, response) => {   
-    const _id = request.params.name;
-    const nft = await Nft.findByIdAndUpdate(_id, request.body, {new: true});
-    response.send(nft);
-})
-
-router.delete('/nfts/:name', async (request, response) => {
-    const _id = request.params.name;
-    const nft = await Nft.findByIdAndDelete(_id);
-    response.send(nft);
-})
 module.exports = router;
